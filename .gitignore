@@ -1,0 +1,11 @@
+# environment
+.venv
+.env
+
+# cache files
+__pycache__
+
+# data files
+*.mp4
+*.jpg
+*.jpeg
