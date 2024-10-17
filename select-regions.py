@@ -104,6 +104,21 @@ class RegionSelector:
         if event.key == "b" or event.key == "B":
             if self.selected_polygon != []:
                 self.__save_polygon()
+
+
+        if event.key == "q":
+            self.__save_and_exit()
+
+    
+    def __save_and_exit(self):
+        """
+        All functionality to run when quitting the program, mainly saving the drawn in a pickle file.
+        """
+        
+        with open("parking-spots.pkl", "wb") as file:
+            pickle.dump(self.stored_polygons, file)
+            pickle.dump(self.img_dimensions, file)
+
     
     def __save_polygon(self):
         """
