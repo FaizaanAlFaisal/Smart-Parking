@@ -6,8 +6,14 @@
 __pycache__
 
 # data files
+data/
 *.mp4
 *.jpg
 *.jpeg
 *.jfif
 *.pkl
+
+# models
+model/
+*.pt
+*pth

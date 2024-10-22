@@ -1,15 +1,15 @@
 import os
+import ast
 import numpy as np
 import cv2
 import pickle
-import argparse
 import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 from matplotlib.patches import Polygon
-from matplotlib.widgets import PolygonSelector, TextBox
-from matplotlib.collections import PatchCollection
-from shapely.geometry import Point
+from matplotlib.widgets import PolygonSelector
+from dotenv import load_dotenv
+load_dotenv(override=True)
+
 
 
 class RegionSelector:
@@ -58,6 +58,8 @@ class RegionSelector:
         
         # prepare background image for polygon selectors
         img = cv2.imread(img_path)
+        if img is None:
+            print("Image not read")
         rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.img = cv2.resize(rgb_img, img_dimensions)
         
@@ -87,7 +89,8 @@ class RegionSelector:
         """
         Functionality to perform when a completed polygon has been selected (start point = end point).
         """
-        self.selected_polygon = verts
+        # round the vertices of the polygons
+        self.selected_polygon = [ (round(x), round(y)) for x, y in verts ]
         print(self.selected_polygon)
 
     
@@ -97,7 +100,6 @@ class RegionSelector:
         """
         # make new polygon
         if event.key == "n" or event.key == "N":
-
             self.__start_new_polygon(self.ax)
         
         # save polygon
@@ -114,7 +116,7 @@ class RegionSelector:
         """
         All functionality to run when quitting the program, mainly saving the drawn in a pickle file.
         """
-        
+        print(f"Saving...\n\nAll stored polygons: {self.stored_polygons}")
         with open("parking-spots.pkl", "wb") as file:
             pickle.dump(self.stored_polygons, file)
             pickle.dump(self.img_dimensions, file)
@@ -169,7 +171,7 @@ class RegionSelector:
 
 
 def main():
-    obj = RegionSelector(img_path='data\imgs\parking_lot.jfif', img_dimensions=(474, 314))
+    obj = RegionSelector(img_path=os.getenv("IMAGE_PATH"), img_dimensions=ast.literal_eval(os.getenv("IMG_DIMENSIONS")))
 
 
 if __name__ == '__main__':
