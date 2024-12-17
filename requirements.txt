@@ -3,7 +3,4 @@ gdown==5.2.0
 numpy==1.26.3
 shapely==2.0.6
 tensorboard==2.17.1
-torch==2.4.1+cu124
-torchaudio==2.4.1+cu124
-torchvision==0.19.1+cu124
 ultralytics==8.2.90
